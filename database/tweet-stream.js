@@ -10,7 +10,7 @@ const twit = new Twit({
 
 const US = ['-177', '18.0', '-65.0', '72.0'];
 
-const writeStream = fs.createWriteStream('./tweets.json');
+const writeStream = fs.createWriteStream('./database/tweets.json');
 let count = 0;
 writeStream.write('[\n');
 const stream = twit.stream('statuses/filter', {locations: US});
