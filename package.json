@@ -4,9 +4,11 @@
   "description": "Mapping tweets",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --mode development"
+    "react-dev": "webpack -d --watch",
+    "start": "webpack-dev-server",
+    "server-dev": "nodemon server/server.js"
   },
-  "author": "Blake Estes, Joseph Oh, Michael Panetta, Greg Richardson",
+  "author": "Blake Estes, Joseph Oh, Michael Panetta, Greg Richar dson",
   "license": "ISC",
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -22,6 +24,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "pg": "^7.4.3",
     "react": "^16.4.0",

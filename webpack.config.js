@@ -1,9 +1,14 @@
 const path = require("path");
 const webpack = require("webpack");
-const bundlePath = path.resolve(__dirname, "dist/");
+const bundlePath = path.resolve(__dirname, "client/dist/");
 
 module.exports = {
-  entry: "./client/index.js",
+  entry: "./client/client.jsx",
+  output: {
+    publicPath: bundlePath,
+    path: bundlePath,
+    filename: "bundle.js"
+  },
   module: {
     rules: [
       {
@@ -19,14 +24,10 @@ module.exports = {
     ]
   },
   resolve: { extensions: ['*', '.js', '.jsx'] },
-  output: {
-    publicPath: bundlePath,
-    filename: "bundle.js"
-  },
-  devServer: {
-    contentBase: path.join(__dirname,'public'),
-    port: 3000,
-    publicPath: "http://localhost:3000/dist"
-  },
+  // devServer: {
+  //   contentBase: path.join(__dirname,'public'),
+  //   port: 3000,
+  //   publicPath: "http://localhost:3000/dist"
+  // },
   plugins: [ new webpack.HotModuleReplacementPlugin() ]
 };
