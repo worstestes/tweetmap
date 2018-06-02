@@ -5,16 +5,7 @@ mongoose.connect(mongoPath, {
   useMongoClient: true
 });
 
-let schemaName = mongoose.Schema({
-  id: {
-    type: Number,
-    index: true,
-    unique: true
-  },
-  name: String,
-});
-
-let collectionName = mongoose.model('collectionName', schemaName);
+var Twit = mongoose.model('Twit', mongoose.Schema({ state: String, text: String}, { collection : 'twitdata' }));   // collection name;
 
 const save = async () => {
   var variable = new schemaName({
@@ -31,4 +22,3 @@ const find = (callback) => {
     .exec((err, data) => {
       callback(data);
     });
-};
