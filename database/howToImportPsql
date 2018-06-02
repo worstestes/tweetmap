@@ -1,5 +1,0 @@
-Install Postgres on your machine then run these commands in commandLine
-$ dropdb tweetMapDb
-$ createdb tweetMapDb
-$ psql tweetMapDb < tweetMapDbDump
-
