@@ -22,3 +22,4 @@ const find = (callback) => {
     .exec((err, data) => {
       callback(data);
     });
+}
