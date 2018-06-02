@@ -1,17 +1,28 @@
-const pg = require('pg');
-const config = require('./config');
-
-//Setup for Heroku database URL otherwise get connection string from config file
-var conString = process.env.DATABASE_URL || config.localPsqlConString;
-
-let client = new pg.Client(conString);
-client.connect((err) => {
-  if (err) {
-    return console.error('ERROR connecting to postgres:', err);
-  }
-  return console.log('CONNECTED to postgres slidedb!');
+const mongoose = require('mongoose');
+mongoose.Promise = global.Promise
+let mongoPath = process.env.MONGODB_URI || 'mongodb://ohzone:0hzone@ds253879.mlab.com:53879/teamtwit';
+mongoose.connect(mongoPath, {
+  useMongoClient: true
 });
 
-module.exports = {
-    
+var Twit = mongoose.model('Twit', mongoose.Schema({ state: String, text: String}, { collection : 'twitdata' }));   // collection name;
+
+
+const save = async () => {
+  var variable = new schemaName({
+    id: '',
+    name: '',
+  });
+  variable.save()
 };
+
+const find = (callback) => {
+  collectionName
+    .find({})
+    .sort('')
+    .exec((err, data) => {
+      callback(data);
+    });
+};
+
+module.exports = Twit;
