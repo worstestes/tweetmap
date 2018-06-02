@@ -7,7 +7,6 @@ mongoose.connect(mongoPath, {
 
 var Twit = mongoose.model('Twit', mongoose.Schema({ state: String, text: String}, { collection : 'twitdata' }));   // collection name;
 
-
 const save = async () => {
   var variable = new schemaName({
     id: '',
@@ -23,6 +22,3 @@ const find = (callback) => {
     .exec((err, data) => {
       callback(data);
     });
-};
-
-module.exports = Twit;
