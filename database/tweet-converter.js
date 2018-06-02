@@ -58,7 +58,6 @@ let tweetArr = fs.readFileSync('./database/tweets.json');
 tweetArr = JSON.parse(tweetArr);
 
 const writeStream = fs.createWriteStream('./database/tweets-state.json');
-writeStream.write('[\n');
 let count = 0;
 
 for (tweet of tweetArr) {
@@ -78,7 +77,7 @@ for (tweet of tweetArr) {
     newText = newText.replace(/\n/gi, ' ');
   
     if (count > 1) {
-      writeStream.write(',\n');
+      writeStream.write('\n');
     }
 
     writeStream.write(JSON.stringify({
@@ -88,6 +87,6 @@ for (tweet of tweetArr) {
   }
 }
 
-writeStream.write('\n]')
+writeStream.write('\n')
 writeStream.end();
 console.log(`Converted ${count} tweets!`);
