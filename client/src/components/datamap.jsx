@@ -33,7 +33,7 @@ export default class Datamap extends React.Component {
   constructor(props) {
 	super(props);
 	this.resizeMap = this.resizeMap.bind(this);
-	console.log(props)
+	// console.log(props)
   }
 
   componentDidMount() {
