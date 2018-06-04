@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 
-import Map from './components/map.jsx'
+// import Map from './components/map.jsx'
 import Tables from './components/tables.jsx'
+import Map from './components/map.jsx'
 
 class App extends React.Component {
 
