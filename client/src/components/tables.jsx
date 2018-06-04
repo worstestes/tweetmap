@@ -7,14 +7,33 @@ class Tables extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      stateWords: [{
+        state: 'Texas',
+        keywords: [{word: 'Trump', count: 5}, {word: 'Ambien', count: 10}]
+      }, {
+        state: 'Florida',
+        keywords: [{word: 'Trump', count: 5}, {word: 'Ambien', count: 10}]
+      }, {
+        state: 'California',
+        keywords: [{word: 'Trump', count: 5}, {word: 'Ambien', count: 10}]
+      }, {
+        state: 'New York',
+        keywords: [{word: 'Trump', count: 5}, {word: 'Ambien', count: 10}]
+      }, {
+        state: 'Idaho',
+        keywords: [{word: 'Trump', count: 5}, {word: 'Ambien', count: 10}]
+      }]
+    };
   }
 
   render() {
     return(
       <div>
         <h1>Tables Page</h1>
-        <p>Tables Below</p>
-        <Table />
+        {this.state.stateWords.map((curState, ind) => {
+          return <Table key={ind} ind={ind} state={curState.state} keywords={curState.keywords}/>;
+        })}
       </div>
     );
   }
