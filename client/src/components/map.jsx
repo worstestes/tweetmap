@@ -3,10 +3,14 @@ import React from 'react';
 import Datamap from './datamap.jsx';
 import Example from './example.jsx';
 
+const colors = d3.scale.category10();
+
 export default class Map extends React.Component {
   
   constructor() {
 	super();
+	console.dir(colors(1))
+	console.dir(colors(1))
 	this.state = {
 	  states: {
 		AZ: {}, CO: {}, DE: {}, FL: {}, GA: {}, HI: {}, ID: {}, IL: {}, IN: {}, IA: {}, 
@@ -352,8 +356,8 @@ export default class Map extends React.Component {
 		  geographyConfig={{
 		    highlightBorderColor: '#bada55',
 			popupTemplate: (geography, data) =>
-			  `<div class='hoverinfo'>${geography.properties.name}\nTrends:\n ${data.trends.map((trend) => {
-				  return trend.word + ': ' + trend.count + '\n';
+			  `<div class='hoverinfo'><b>${geography.properties.name}\nTrends:\n</b> ${data.trends.map((trend) => {
+				  return ' ' + trend.word + ': ' + trend.count;
 			  })}`,
 			    highlightBorderWidth: 3
 		  }}
