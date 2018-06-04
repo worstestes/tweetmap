@@ -3,133 +3,137 @@ import React from 'react';
 import Datamaps from 'datamaps';
 
 const MAP_CLEARING_PROPS = [
-	'height', 'scope', 'setProjection', 'width'
+  'height', 'scope', 'setProjection', 'width'
 ];
 
 const propChangeRequiresMapClear = (oldProps, newProps) => {
-	return MAP_CLEARING_PROPS.some((key) =>
-		oldProps[key] !== newProps[key]
-	);
+  return MAP_CLEARING_PROPS.some((key) =>
+	oldProps[key] !== newProps[key]
+  );
 };
 
 export default class Datamap extends React.Component {
+	
+  // Originally in here when copied over but pop a syntax error
+  // static propTypes = {
+  // 	return {arc: PropTypes.array,
+  // 	arcOptions: PropTypes.object,
+  // 	bubbleOptions: PropTypes.object,
+  // 	bubbles: PropTypes.array,
+  // 	data: PropTypes.object,
+  // 	graticule: PropTypes.bool,
+  // 	height: PropTypes.any,
+  // 	labels: PropTypes.bool,
+  // 	responsive: PropTypes.bool,
+  // 	style: PropTypes.object,
+  // 	updateChoroplethOptions: PropTypes.object,
+  // 	width: PropTypes.any}
+  // };
 
-	// static propTypes() {
-	// 	return {arc: PropTypes.array,
-	// 	arcOptions: PropTypes.object,
-	// 	bubbleOptions: PropTypes.object,
-	// 	bubbles: PropTypes.array,
-	// 	data: PropTypes.object,
-	// 	graticule: PropTypes.bool,
-	// 	height: PropTypes.any,
-	// 	labels: PropTypes.bool,
-	// 	responsive: PropTypes.bool,
-	// 	style: PropTypes.object,
-	// 	updateChoroplethOptions: PropTypes.object,
-	// 	width: PropTypes.any}
-	// };
+  constructor(props) {
+	super(props);
+	this.resizeMap = this.resizeMap.bind(this);
+	console.log(props)
+  }
 
-	constructor(props) {
-		super(props);
-		this.resizeMap = this.resizeMap.bind(this);
-		console.log(props)
+  componentDidMount() {
+	if (this.props.responsive) {
+	  window.addEventListener('resize', this.resizeMap);
+	}
+	this.drawMap();
+  }
+
+  componentWillReceiveProps(newProps) {
+	if (propChangeRequiresMapClear(this.props, newProps)) {
+	  this.clear();
+	}
+  }
+
+  componentDidUpdate() {
+	this.drawMap();
+  }
+
+  componentWillUnmount() {
+	this.clear();
+	if (this.props.responsive) {
+	  window.removeEventListener('resize', this.resizeMap);
+	}
+  }
+
+  clear() {
+	const { container } = this.refs;
+
+	for (const child of Array.from(container.childNodes)) {
+	  container.removeChild(child);
 	}
 
-	componentDidMount() {
-		if (this.props.responsive) {
-			window.addEventListener('resize', this.resizeMap);
-		}
-		this.drawMap();
-	}
+	delete this.map;
+  }
 
-	componentWillReceiveProps(newProps) {
-		if (propChangeRequiresMapClear(this.props, newProps)) {
-			this.clear();
-		}
-	}
-
-	componentDidUpdate() {
-		this.drawMap();
-	}
-
-	componentWillUnmount() {
-		this.clear();
-		if (this.props.responsive) {
-			window.removeEventListener('resize', this.resizeMap);
-		}
-	}
-
-	clear() {
-		const { container } = this.refs;
-
-		for (const child of Array.from(container.childNodes)) {
-			container.removeChild(child);
-		}
-
-		delete this.map;
-	}
-
-	drawMap() {
-		const {
-			arc,
-			arcOptions,
-			bubbles,
-			bubbleOptions,
-			data,
-			graticule,
-			labels,
-			updateChoroplethOptions,
+  drawMap() {
+	const {
+	  arc,
+	  arcOptions,
+	  bubbles,
+	  bubbleOptions,
+	  data,
+	  graticule,
+	  labels,
+	  updateChoroplethOptions,
 			
-			// ...props
-		} = this.props;
+	  //Originally in here but spread operator is not working for us. Tried pulling props out manually, hopefully didn't miss anything
+	  // ...props
+	} = this.props;
 
-		let map = this.map;
+	let map = this.map;
 
-		if (!map) {
-			map = this.map = new Datamaps({
-				// ...props,
-				scope: this.props.scope,
-				labels: this.props.labels,
-				fills: this.props.fills,
-				geographyConfig: this.props.geographyConfig,
-				data,
-				element: this.refs.container
-			});
-		} else {
-			map.updateChoropleth(data, updateChoroplethOptions);
-		}
+	if (!map) {
+	  map = this.map = new Datamaps({
+	    //Originally in here but spread operator is not working for us. Tried pulling props out manually, hopefully didn't miss anything
+	    // ...props,
+	    scope: this.props.scope,
+	    labels: this.props.labels,
+	    fills: this.props.fills,
+	    geographyConfig: this.props.geographyConfig,
+	    data,
+	    element: this.refs.container
+	  });
+	} else {
+	  map.updateChoropleth(data, updateChoroplethOptions);
+	  }
 
-		if (arc) {
-			map.arc(arc, arcOptions);
-		}
+	  if (arc) {
+	    map.arc(arc, arcOptions);
+	  }
 
-		if (bubbles) {
-			map.bubbles(bubbles, bubbleOptions);
-		}
+	  if (bubbles) {
+		map.bubbles(bubbles, bubbleOptions);
+	  }
 
-		if (graticule) {
-			map.graticule();
-		}
+	  if (graticule) {
+		map.graticule();
+	  }
 
-		if (labels) {
-			map.labels();
-		}
+	  if (labels) {
+		map.labels();
+	  }
 	}
 
 	resizeMap() {
-		this.map.resize();
+	  this.map.resize();
 	}
 
 	render() {
-		const style = {
-			height: '100%',
-			position: 'relative',
-			width: '100%',
-			height: '600px'
-			// ...this.props.style
-		};
+	  const style = {
+		height: '100%',
+		position: 'relative',
+		width: '100%',
+		height: '600px'
+		//Originally in here but spread operator is not working for us. Tried pulling props out manually, hopefully didn't miss anything
+		// ...this.props.style
+	  };
 
-		return <div ref="container" style={style} />;
+	  return <div ref="container" style={style} />;
 	}
 
 }
