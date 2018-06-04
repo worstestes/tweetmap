@@ -6,3 +6,43 @@ body {
 h1 {
   font-family: Quicksand;
 }
+
+h3 {
+  font-family: Quicksand;
+  margin-bottom: 3px;
+}
+
+table {
+  width: 100%;
+  background: lavender;
+  border: 2px solid;
+  border-collapse: collapse;
+}
+
+th {
+  border-bottom: 2px solid;
+}
+
+tr {
+  border: 1px groove;
+}
+
+.nav-selected {
+  padding: 5px;
+  color: rebeccapurple;
+}
+
+.nav-unselected {
+  padding: 5px;
+}
+
+.state-table {
+  display: inline-block;
+  width: 25%;
+  margin-bottom: 15px;
+}
+
+.tMiddle {
+  margin-left: 5%;
+  margin-right: 5%;
+}
