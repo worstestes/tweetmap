@@ -348,13 +348,18 @@ export default class Map extends React.Component {
 		//Find lowest and highest percentages to make color gradient
 		let lowest = 1;
 		let highest = 0;
+		let sumPercentage = 0;
+		let count = 0;
 		for (let state in this.state.states) {
+			count++;
+			sumPercentage += this.state.states[state].fillKey;
 			this.state.states[state].fillKey < lowest ? lowest = this.state.states[state].fillKey : null;
 			this.state.states[state].fillKey > highest ? highest = this.state.states[state].fillKey : null;
 		}
 		
+		let mean = sumPercentage / count;
 		//Create color gradient based on lowest and highest percentages found
-		const colors = d3.scale.linear().domain([lowest, highest]).range(['#fff5f5', '#cc0000']);
+		const colors = d3.scale.linear().domain([lowest, mean, highest]).range(['#fff0f0', '#ff4d4d', '#990000']);
 		let colorObj = {};
 		for (let state in this.state.states) {
 			colorObj[this.state.states[state].fillKey] = colors(this.state.states[state].fillKey)	
