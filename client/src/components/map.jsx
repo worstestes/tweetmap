@@ -3,8 +3,6 @@ import React from 'react';
 import Datamap from './datamap.jsx';
 import Example from './example.jsx';
 
-const colors = d3.scale.linear().domain([0,.4]).range(['white','red']);
-
 export default class Map extends React.Component {
   
   constructor() {
@@ -215,19 +213,19 @@ export default class Map extends React.Component {
 			fillKey: .2
 		},
 		MD: {
-			fillKey: .4
+			fillKey: .3
 		},
 		ME: {
-			fillKey: .4
+			fillKey: .3
 		},
 		MA: {
-			fillKey: .4
+			fillKey: .3
 		},
 		MN: {
-			fillKey: .4
+			fillKey: .3
 		},
 		MI: {
-			fillKey: .4
+			fillKey: .3
 		},
 		MS: {
 			fillKey: .2
@@ -347,10 +345,19 @@ export default class Map extends React.Component {
   }
 	
 	createFills() {
+		//Find lowest and highest percentages to make color gradient
+		let lowest = 1;
+		let highest = 0;
+		for (let state in this.state.states) {
+			this.state.states[state].fillKey < lowest ? lowest = this.state.states[state].fillKey : null;
+			this.state.states[state].fillKey > highest ? highest = this.state.states[state].fillKey : null;
+		}
+		
+		//Create color gradient based on lowest and highest percentages found
+		const colors = d3.scale.linear().domain([lowest, highest]).range(['#fff5f5', '#cc0000']);
 		let colorObj = {};
 		for (let state in this.state.states) {
-			colorObj[this.state.states[state].fillKey] = colors(this.state.states[state].fillKey)
-			
+			colorObj[this.state.states[state].fillKey] = colors(this.state.states[state].fillKey)	
 		}
 		console.log(colorObj);
 		return colorObj;
