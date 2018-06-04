@@ -92,7 +92,7 @@ export default class Datamap extends React.Component {
 	    //Originally in here but spread operator is not working for us. Tried pulling props out manually, hopefully didn't miss anything
 	    // ...props,
 	    scope: this.props.scope,
-	    labels: this.props.labels,
+	    labels: 'this.props.labels',
 	    fills: this.props.fills,
 	    geographyConfig: this.props.geographyConfig,
 	    data,
