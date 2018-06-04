@@ -30,6 +30,9 @@
     "pg": "^7.4.3",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
-    "twit": "^2.2.9"
+    "remove-punctuation": "0.0.4",
+    "stopword": "^0.1.10",
+    "twit": "^2.2.9",
+    "underscore": "^1.9.1"
   }
 }

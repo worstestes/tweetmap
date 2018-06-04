@@ -3,67 +3,56 @@ mongoose.Promise = global.Promise
 let mongoPath = process.env.MONGODB_URI || 'mongodb://ohzone:0hzone@ds253879.mlab.com:53879/teamtwit';
 mongoose.connect(mongoPath);
 let db = mongoose.connection;
-var Schema = mongoose.Schema;
+let Schema = mongoose.Schema;
+let sw = require('stopword');
+let _ = require('underscore');
+let bodyParser = require('body-parser')
+let rp = require('remove-punctuation');
 db.on('error', console.error.bind(console, 'connection error:')); 
 db.once('open', function() { console.log('Connection Established.') });
 
-let Data = mongoose.model('Twitdata', 
-               new Schema({ state: String, text: String}), 
-               'twitdata');
-               
-               
-               
-// console.log(Data.find().exec((err, res) => {
-//   console.log(res);
-//     }));
+let data = mongoose.model('Twitdata', 
+  new Schema({ state: String, text: String}), 'twitdata');
 
-// var map = function() {  
-//   var summary = this.message_soup_text;
-//   if (summary) { 
-//       // quick lowercase to normalize per your requirements
-//       summary = summary.toLowerCase().split(" "); 
-//       for (var i = summary.length - 1; i >= 0; i--) {
-//           // might want to remove punctuation, etc. here
-//           if (summary[i])  {      // make sure there's something
-//              emit(summary[i], 1); // store a 1 for each word
-//           }
-//       }
-//   }
-// };
+const tweetArr = [];
+data.find().exec().then((tweets) => {
+  for(let tweet of tweets) {
+    const newTweetData = {};
+    let tweetText = tweet.text.split(' ');
+    let newTweetText = sw.removeStopwords(tweetText);
 
-// var reduce = function( key, values ) {    
-//   var count = 0;    
-//   values.forEach(function(v) {            
-//       count +=v;    
-//   });
-//   return count;
-// }
+    newTweetData.state = tweet.state;
+    newTweetData.text = newTweetText;
+    tweetArr.push(newTweetData);
+  }
 
-// full thing
-Data.mapReduce(map, reduce, { out: "word_count" })
+  let final = [];
+  for(let tweet of tweetArr) {
+    final.push(tweet.text);
+  }
 
+  final = _.flatten(final);
 
-// > db.word_count.find().sort({value:-1})
+  let test = [];
+  for(let word of final) {
+    test.push(word.toLowerCase());
+  }
+
+  let desired = test.filter((word) => word !== '');
+
+  var frequencies = desired.reduce(function(acc, word) {
+    acc[word] = (acc[word] + 1) || 1;
+    return acc;
+}, {});
 
 
+var mostFrequentWord = Object.keys(frequencies)
+  .reduce(function(highest, current) {
+    return frequencies[highest] > frequencies[current] ? highest : current;
+  }, "");
+
+  console.log(mostFrequentWord);
 
 
-
-
-const save = async () => {
-  var variable = new schemaName({
-    id: '',
-    name: '',
   });
-  variable.save();
-};
-
-// const find = (name, callback) => {
-//     name
-//     .find({})
-//     .sort('')
-//     .exec((err, data) => {
-//       callback(data);
-//     });
-
-// }
+      
