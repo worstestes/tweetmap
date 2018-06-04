@@ -3,14 +3,12 @@ import React from 'react';
 import Datamap from './datamap.jsx';
 import Example from './example.jsx';
 
-const colors = d3.scale.category10();
+const colors = d3.scale.linear().domain([0,.4]).range(['white','red']);
 
 export default class Map extends React.Component {
   
   constructor() {
 	super();
-	console.dir(colors(1))
-	console.dir(colors(1))
 	this.state = {
 	  states: {
 		AZ: {}, CO: {}, DE: {}, FL: {}, GA: {}, HI: {}, ID: {}, IL: {}, IN: {}, IA: {}, 
@@ -178,154 +176,154 @@ export default class Map extends React.Component {
 
 	let testPercentages = {
 		AZ: {
-			fillKey: 'Republican',
+			fillKey: .01
 		},
 		CO: {
-			fillKey: 'Light Democrat',
+			fillKey: .02
 		},
 		DE: {
-			fillKey: 'Democrat',
+			fillKey: .03
 		},
 		FL: {
-			fillKey: 'UNDECIDED'
+			fillKey: .04
 		},
 		GA: {
-			fillKey: 'Republican'
+			fillKey: .2
 		},
 		HI: {
-			fillKey: 'Democrat'
+			fillKey: .08
 		},
 		ID: {
-			fillKey: 'Republican'
+			fillKey: .2
 		},
 		IL: {
-			fillKey: 'Democrat'
+			fillKey: .08
 		},
 		IN: {
-			fillKey: 'Republican'
+			fillKey: .2
 		},
 		IA: {
-			fillKey: 'Light Democrat'
+			fillKey: .15
 		},
 		KS: {
-			fillKey: 'Republican'
+			fillKey: .2
 		},
 		KY: {
-			fillKey: 'Republican'
+			fillKey: .2
 		},
 		LA: {
-			fillKey: 'Republican'
+			fillKey: .2
 		},
 		MD: {
-			fillKey: 'Democrat'
+			fillKey: .4
 		},
 		ME: {
-			fillKey: 'Democrat'
+			fillKey: .4
 		},
 		MA: {
-			fillKey: 'Democrat'
+			fillKey: .4
 		},
 		MN: {
-			fillKey: 'Democrat'
+			fillKey: .4
 		},
 		MI: {
-			fillKey: 'Democrat'
+			fillKey: .4
 		},
 		MS: {
-			fillKey: 'Republican'
+			fillKey: .2
 		},
 		MO: {
-			fillKey: 'Republican'
+			fillKey: .2
 		},
 		MT: {
-			fillKey: 'Republican'
+			fillKey: .2
 		},
 		NC: {
-			fillKey: 'Light Republican'
+			fillKey: .04
 		},
 		NE: {
-			fillKey: 'Republican'
+			fillKey: .2
 		},
 		NV: {
-			fillKey: 'Heavy Democrat'
+			fillKey: .06
 		},
 		NH: {
-			fillKey: 'Light Democrat'
+			fillKey: .15
 		},
 		NJ: {
-			fillKey: 'Democrat'
+			fillKey: .18
 		},
 		NY: {
-			fillKey: 'Democrat'
+			fillKey: .18
 		},
 		ND: {
-			fillKey: 'Republican'
+			fillKey: .2
 		},
 		NM: {
-			fillKey: 'Democrat'
+			fillKey: .18
 		},
 		OH: {
-			fillKey: 'UNDECIDED'
+			fillKey: .03
 		},
 		OK: {
-			fillKey: 'Republican'
+			fillKey: .2
 		},
 		OR: {
-			fillKey: 'Democrat'
+			fillKey: .18
 		},
 		PA: {
-			fillKey: 'Democrat'
+			fillKey: .18
 		},
 		RI: {
-			fillKey: 'Democrat'
+			fillKey: .18
 		},
 		SC: {
-			fillKey: 'Republican'
+			fillKey: .2
 		},
 		SD: {
-			fillKey: 'Republican'
+			fillKey: .2
 		},
 		TN: {
-			fillKey: 'Republican'
+			fillKey: .2
 		},
 		TX: {
-			fillKey: 'Republican'
+			fillKey: 0.1
 		},
 		UT: {
-			fillKey: 'Republican'
+			fillKey: .2
 		},
 		WI: {
-			fillKey: 'Democrat'
+			fillKey: .18
 		},
 		VA: {
-			fillKey: 'Light Democrat'
+			fillKey: .15
 		},
 		VT: {
-			fillKey: 'Democrat'
+			fillKey: .18
 		},
 		WA: {
-			fillKey: 'Democrat'
+			fillKey: .18
 		},
 		WV: {
-			fillKey: 'Republican'
+			fillKey: .2
 		},
 		WY: {
-			fillKey: 'Republican'
+			fillKey: .2
 		},
 		CA: {
-			fillKey: 'Democrat'
+			fillKey: .18
 		},
 		CT: {
-			fillKey: 'Democrat'
+			fillKey: .18
 		},
 		AK: {
-			fillKey: 'Republican'
+			fillKey: .2
 		},
 		AR: {
-			fillKey: 'Republican'
+			fillKey: .2
 		},
 		AL: {
-			fillKey: 'Republican'
+			fillKey: .2
 		}
 	  }
 	this.setPercentages(testPercentages);
@@ -347,31 +345,33 @@ export default class Map extends React.Component {
 	}
 	this.setState({states: statesCopy});
   }
-  
+	
+	createFills() {
+		let colorObj = {};
+		for (let state in this.state.states) {
+			colorObj[this.state.states[state].fillKey] = colors(this.state.states[state].fillKey)
+			
+		}
+		console.log(colorObj);
+		return colorObj;
+	}
+
   render() {
-	return (
-	  <Example label="USA Heat Map">
-	    <Datamap
-		  scope="usa"
-		  geographyConfig={{
-		    highlightBorderColor: '#bada55',
-			popupTemplate: (geography, data) =>
-			  `<div class='hoverinfo'><b>${geography.properties.name}\nTrends:\n</b> ${data.trends.map((trend) => {
-				  return ' ' + trend.word + ': ' + trend.count;
-			  })}`,
-			    highlightBorderWidth: 3
-		  }}
-		  fills={{
-		    'Republican': '#cc4731',
-			'Democrat': '#306596',
-			'Heavy Democrat': '#667faf',
-			'Light Democrat': '#a9c0de',
-			'Heavy Republican': '#ca5e5b',
-			'Light Republican': '#eaa9a8',
-			'defaultFill': '#eddc4e'
-		  }}
-		  data={this.state.states}
-		labels />
-	  </Example>);
+		return (
+			<Example label="USA Heat Map">
+				<Datamap
+				scope="usa"
+				geographyConfig={{
+					highlightBorderColor: '#bada55',
+				popupTemplate: (geography, data) =>
+					`<div class='hoverinfo'><b>${geography.properties.name}\nTrends:\n</b> ${data.trends.map((trend) => {
+						return ' ' + trend.word + ': ' + trend.count;
+					})}`,
+						highlightBorderWidth: 3
+				}}
+				fills={this.createFills()}
+				data={this.state.states}
+			labels />
+			</Example>);
 	}
 }
