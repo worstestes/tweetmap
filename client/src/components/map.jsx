@@ -8,211 +8,340 @@ export default class Map extends React.Component {
   constructor() {
 	super();
 	this.state = {
-	  array: [1,2,3],
-	  data: {
-		AZ: {
-		  fillKey: 'Republican',
-		  electoralVotes: 5
-		},
-		CO: {
-		  fillKey: 'Light Democrat',
-		  electoralVotes: 5
-		},
-		DE: {
-		  fillKey: 'Democrat',
-		  electoralVotes: 32
-		},
-		FL: {
-		  fillKey: 'UNDECIDED',
-		  electoralVotes: 29
-		},
-		GA: {
-		  fillKey: 'Republican',
-		  electoralVotes: 32
-		},
-		HI: {
-		  fillKey: 'Democrat',
-		  electoralVotes: 32
-		},
-		ID: {
-		  fillKey: 'Republican',
-		  electoralVotes: 32
-		},
-		IL: {
-		  fillKey: 'Democrat',
-		  electoralVotes: 32
-		},
-		IN: {
-		  fillKey: 'Republican',
-		  electoralVotes: 11
-		},
-		IA: {
-		  fillKey: 'Light Democrat',
-		  electoralVotes: 11
-		},
-		KS: {
-		  fillKey: 'Republican',
-		  electoralVotes: 32
-		},
-		KY: {
-		  fillKey: 'Republican',
-		  electoralVotes: 32
-		},
-		LA: {
-		  fillKey: 'Republican',
-		  electoralVotes: 32
-		},
-		MD: {
-		  fillKey: 'Democrat',
-		  electoralVotes: 32
-		},
-		ME: {
-		  fillKey: 'Democrat',
-		  electoralVotes: 32
-		},
-		MA: {
-		  fillKey: 'Democrat',
-		  electoralVotes: 32
-		},
-		MN: {
-		  fillKey: 'Democrat',
-		  electoralVotes: 32
-		},
-		MI: {
-		  fillKey: 'Democrat',
-		  electoralVotes: 32
-		},
-		MS: {
-		  fillKey: 'Republican',
-		  electoralVotes: 32
-		},
-		MO: {
-		  fillKey: 'Republican',
-		  electoralVotes: 13
-		},
-		MT: {
-		  fillKey: 'Republican',
-		  electoralVotes: 32
-		},
-		NC: {
-		  fillKey: 'Light Republican',
-		  electoralVotes: 32
-		},
-		NE: {
-		  fillKey: 'Republican',
-		  electoralVotes: 32
-		},
-		NV: {
-		  fillKey: 'Heavy Democrat',
-		  electoralVotes: 32
-		},
-		NH: {
-		  fillKey: 'Light Democrat',
-		  electoralVotes: 32
-		},
-		NJ: {
-		  fillKey: 'Democrat',
-		  electoralVotes: 32
-		},
-		NY: {
-		  fillKey: 'Democrat',
-		  electoralVotes: 32
-		},
-		ND: {
-		  fillKey: 'Republican',
-		  electoralVotes: 32
-		},
-		NM: {
-		  fillKey: 'Democrat',
-		  electoralVotes: 32
-		},
-		OH: {
-		  fillKey: 'UNDECIDED',
-		  electoralVotes: 32
-		},
-		OK: {
-		  fillKey: 'Republican',
-		  electoralVotes: 32
-		},
-		OR: {
-		  fillKey: 'Democrat',
-		  electoralVotes: 32
-		},
-		PA: {
-		  fillKey: 'Democrat',
-		  electoralVotes: 32
-		},
-		RI: {
-		  fillKey: 'Democrat',
-		  electoralVotes: 32
-		},
-		SC: {
-		  fillKey: 'Republican',
-		  electoralVotes: 32
-		},
-		SD: {
-		  fillKey: 'Republican',
-		  electoralVotes: 32
-		},
-		TN: {
-		  fillKey: 'Republican',
-		  electoralVotes: 32
-		},
-		TX: {
-		  fillKey: 'Republican',
-		  electoralVotes: 322
-		},
-		UT: {
-		  fillKey: 'Republican',
-		  electoralVotes: 32
-		},
-		WI: {
-		  fillKey: 'Democrat',
-		  electoralVotes: 32
-		},
-		VA: {
-		  fillKey: 'Light Democrat',
-		  electoralVotes: 32
-		},
-		VT: {
-		  fillKey: 'Democrat',
-		  electoralVotes: 32
-		},
-		WA: {
-		  fillKey: 'Democrat',
-		  electoralVotes: 32
-		},
-		WV: {
-		  fillKey: 'Republican',
-		  electoralVotes: 32
-		},
-		WY: {
-		  fillKey: 'Republican',
-		  electoralVotes: 32
-		},
-		CA: {
-		  fillKey: 'Democrat',
-		  electoralVotes: 32
-		},
-		CT: {
-		  fillKey: 'Democrat',
-		  electoralVotes: 32
-		},
-		AK: {
-		  fillKey: 'Republican',
-		  electoralVotes: 32
-		},
-		AR: {
-		  fillKey: 'Republican',
-		  electoralVotes: 32
-		},
-		AL: {
-		  fillKey: 'Republican',
-		  electoralVotes: 32
-		}
+	  states: {
+		AZ: {}, CO: {}, DE: {}, FL: {}, GA: {}, HI: {}, ID: {}, IL: {}, IN: {}, IA: {}, 
+		KS: {}, KY: {}, LA: {}, MD: {}, ME: {}, MA: {}, MN: {}, MI: {}, MS: {}, MO: {},
+		MT: {}, NC: {}, NE: {}, NV: {}, NH: {}, NJ: {}, NY: {}, ND: {}, NM: {}, OH: {},
+		OK: {}, OR: {}, PA: {}, RI: {}, SC: {}, SD: {}, TN: {}, TX: {}, UT: {}, WI: {},
+		VA: {}, VT: {}, WA: {}, WV: {}, WY: {}, CA: {}, CT: {}, AK: {}, AR: {}, AL: {}
 	  }
 	}
-	console.log(this.state.data)
+  }
+  componentWillMount() {
+	let testTrends = {
+		AZ: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		CO: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		DE: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		FL: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		GA: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		HI: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		ID: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		IL: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		IN: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		IA: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		KS: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		KY: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		LA: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		MD: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		ME: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		MA: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		MN: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		MI: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		MS: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		MO: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		MT: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		NC: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		NE: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		NV: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		NH: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		NJ: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		NY: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		ND: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		NM: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		OH: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		OK: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		OR: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		PA: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		RI: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		SC: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		SD: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		TN: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		TX: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		UT: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		WI: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		VA: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		VT: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		WA: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		WV: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		WY: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		CA: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		CT: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		AK: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		AR: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		},
+		AL: {
+		  trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]
+		}
+	  }
+	this.setTrends(testTrends);
+
+	let testPercentages = {
+		AZ: {
+			fillKey: 'Republican',
+		},
+		CO: {
+			fillKey: 'Light Democrat',
+		},
+		DE: {
+			fillKey: 'Democrat',
+		},
+		FL: {
+			fillKey: 'UNDECIDED'
+		},
+		GA: {
+			fillKey: 'Republican'
+		},
+		HI: {
+			fillKey: 'Democrat'
+		},
+		ID: {
+			fillKey: 'Republican'
+		},
+		IL: {
+			fillKey: 'Democrat'
+		},
+		IN: {
+			fillKey: 'Republican'
+		},
+		IA: {
+			fillKey: 'Light Democrat'
+		},
+		KS: {
+			fillKey: 'Republican'
+		},
+		KY: {
+			fillKey: 'Republican'
+		},
+		LA: {
+			fillKey: 'Republican'
+		},
+		MD: {
+			fillKey: 'Democrat'
+		},
+		ME: {
+			fillKey: 'Democrat'
+		},
+		MA: {
+			fillKey: 'Democrat'
+		},
+		MN: {
+			fillKey: 'Democrat'
+		},
+		MI: {
+			fillKey: 'Democrat'
+		},
+		MS: {
+			fillKey: 'Republican'
+		},
+		MO: {
+			fillKey: 'Republican'
+		},
+		MT: {
+			fillKey: 'Republican'
+		},
+		NC: {
+			fillKey: 'Light Republican'
+		},
+		NE: {
+			fillKey: 'Republican'
+		},
+		NV: {
+			fillKey: 'Heavy Democrat'
+		},
+		NH: {
+			fillKey: 'Light Democrat'
+		},
+		NJ: {
+			fillKey: 'Democrat'
+		},
+		NY: {
+			fillKey: 'Democrat'
+		},
+		ND: {
+			fillKey: 'Republican'
+		},
+		NM: {
+			fillKey: 'Democrat'
+		},
+		OH: {
+			fillKey: 'UNDECIDED'
+		},
+		OK: {
+			fillKey: 'Republican'
+		},
+		OR: {
+			fillKey: 'Democrat'
+		},
+		PA: {
+			fillKey: 'Democrat'
+		},
+		RI: {
+			fillKey: 'Democrat'
+		},
+		SC: {
+			fillKey: 'Republican'
+		},
+		SD: {
+			fillKey: 'Republican'
+		},
+		TN: {
+			fillKey: 'Republican'
+		},
+		TX: {
+			fillKey: 'Republican'
+		},
+		UT: {
+			fillKey: 'Republican'
+		},
+		WI: {
+			fillKey: 'Democrat'
+		},
+		VA: {
+			fillKey: 'Light Democrat'
+		},
+		VT: {
+			fillKey: 'Democrat'
+		},
+		WA: {
+			fillKey: 'Democrat'
+		},
+		WV: {
+			fillKey: 'Republican'
+		},
+		WY: {
+			fillKey: 'Republican'
+		},
+		CA: {
+			fillKey: 'Democrat'
+		},
+		CT: {
+			fillKey: 'Democrat'
+		},
+		AK: {
+			fillKey: 'Republican'
+		},
+		AR: {
+			fillKey: 'Republican'
+		},
+		AL: {
+			fillKey: 'Republican'
+		}
+	  }
+	this.setPercentages(testPercentages);
+	setTimeout(() => (console.log(this.state.states)), 0);
+  }
+
+  setPercentages(data) {
+	let statesCopy = Object.assign({}, this.state.states);
+	for (let state in statesCopy) {
+	  statesCopy[state].fillKey = data[state].fillKey;
+	}
+	this.setState({states: statesCopy});
+  }
+
+  setTrends(data) {
+	let statesCopy = Object.assign({}, this.state.states);
+	for (let state in statesCopy) {
+	  statesCopy[state].trends = data[state].trends;
+	}
+	this.setState({states: statesCopy});
   }
   
   render() {
@@ -223,7 +352,9 @@ export default class Map extends React.Component {
 		  geographyConfig={{
 		    highlightBorderColor: '#bada55',
 			popupTemplate: (geography, data) =>
-			  `<div class='hoverinfo'>${geography.properties.name}\nElectoral Votes: ${data.electoralVotes}`,
+			  `<div class='hoverinfo'>${geography.properties.name}\nTrends:\n ${data.trends.map((trend) => {
+				  return trend.word + ': ' + trend.count + '\n';
+			  })}`,
 			    highlightBorderWidth: 3
 		  }}
 		  fills={{
@@ -235,7 +366,7 @@ export default class Map extends React.Component {
 			'Light Republican': '#eaa9a8',
 			'defaultFill': '#eddc4e'
 		  }}
-		  data= {this.state.data}
+		  data={this.state.states}
 		labels />
 	  </Example>);
 	}
