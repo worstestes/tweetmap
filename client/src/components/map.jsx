@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Datamap from './datamap.jsx';
-import Example from './example.jsx';
 
 import testData from '../../../database/testData.js';
 export default class Map extends React.Component {
@@ -10,14 +9,13 @@ export default class Map extends React.Component {
 	super();
 	this.state = {
 	  states: {
-		AZ: {}, CO: {}, DE: {}, FL: {}, GA: {}, HI: {}, ID: {}, IL: {}, IN: {}, IA: {}, 
-		KS: {}, KY: {}, LA: {}, MD: {}, ME: {}, MA: {}, MN: {}, MI: {}, MS: {}, MO: {},
-		MT: {}, NC: {}, NE: {}, NV: {}, NH: {}, NJ: {}, NY: {}, ND: {}, NM: {}, OH: {},
-		OK: {}, OR: {}, PA: {}, RI: {}, SC: {}, SD: {}, TN: {}, TX: {}, UT: {}, WI: {},
-		VA: {}, VT: {}, WA: {}, WV: {}, WY: {}, CA: {}, CT: {}, AK: {}, AR: {}, AL: {}
+			AZ: {}, CO: {}, DE: {}, FL: {}, GA: {}, HI: {}, ID: {}, IL: {}, IN: {}, IA: {}, 
+			KS: {}, KY: {}, LA: {}, MD: {}, ME: {}, MA: {}, MN: {}, MI: {}, MS: {}, MO: {},
+			MT: {}, NC: {}, NE: {}, NV: {}, NH: {}, NJ: {}, NY: {}, ND: {}, NM: {}, OH: {},
+			OK: {}, OR: {}, PA: {}, RI: {}, SC: {}, SD: {}, TN: {}, TX: {}, UT: {}, WI: {},
+			VA: {}, VT: {}, WA: {}, WV: {}, WY: {}, CA: {}, CT: {}, AK: {}, AR: {}, AL: {}
 	  }
 	}
-	console.log('sdf',testData.testTrends)
   }
   componentWillMount() {
 		this.setTrends(testData.testTrends);
@@ -67,20 +65,19 @@ export default class Map extends React.Component {
 
   render() {
 		return (
-			<Example label="USA Heat Map">
-				<Datamap
+			<Datamap
 				scope="usa"
 				geographyConfig={{
 					highlightBorderColor: '#bada55',
-				popupTemplate: (geography, data) =>
-					`<div class='hoverinfo'><b>${geography.properties.name}\nTrends:\n</b> ${data.trends.map((trend) => {
-						return ' ' + trend.word + ': ' + trend.count;
+					popupTemplate: (geography, data) =>
+						`<div class='hoverinfo'><b>${geography.properties.name}\nTrends:\n</b> ${data.trends.map((trend) => {
+							return ' ' + trend.word + ': ' + trend.count;
 					})}`,
-						highlightBorderWidth: 3
+					highlightBorderWidth: 3
 				}}
 				fills={this.createFills()}
 				data={this.state.states}
 			labels />
-			</Example>);
+		)
 	}
 }
