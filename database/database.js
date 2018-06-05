@@ -11,11 +11,16 @@ let rp = require('remove-punctuation');
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () { console.log('Connection Established.') });
 
-let data = mongoose.model('Twitdata',
-  new Schema({ state: String, text: String }), 'twitdata');
+let stateTweet = mongoose.model('StateTweet',
+  new Schema({ state: String, text: String }),
+  'StateTweets');
+  
+const nationalTrends = mongoose.model('NationalTrend',
+  new Schema({ trend: String, rank: Number, date: String }),
+  'NationalTrends');
 
 const tweetArr = [];
-data.find().exec().then((tweets) => {
+stateTweet.find().exec().then((tweets) => {
   for (let tweet of tweets) {
     const newTweetData = {};
     let tweetText = tweet.text.split(' ');
@@ -55,10 +60,6 @@ data.find().exec().then((tweets) => {
 
 });
 
-const nationalTrends = mongoose.model('nationaltrend',
-  new Schema({ trend: String, rank: Number, date: String }),
-  'NationalTrends');
-
 const getNationalTrends = async () => {
   let res = await nationalTrends
     .find({rank: {$lte: 10}})
@@ -67,5 +68,47 @@ const getNationalTrends = async () => {
   return res;
 };
 
-module.exports.getNationalTrends = getNationalTrends;
+const getStatePercentages = async (keyword) => {
+  let percents = await stateTweet
+    .aggregate([
+      {
+        $group: {
+          _id: "$state",
+          state: {$first: "$state"},
+          totalCount: {$sum: 1},
+          text: {$push: "$$ROOT.text"}
+        }
+      }, {
+        $unwind: "$text"
+      }, {
+        $match: {
+          "text": {"$regex": keyword.word, "$options": "i"}
+        }
+      }, {
+        $group: {
+          _id: "$state",
+          state: {$first: "$state"},
+          totalCount: {$first: "$totalCount"},
+          matchCount: {$sum: 1}
+        }
+      }, {
+        $project: {
+          _id: 0,
+          state: 1,
+          percent: {$multiply: [{$divide: ["$matchCount", "$totalCount"]}, 100]}
+        }
+      }
+    ]);
+    
+  percents = percents.map((state) => {
+    return {
+      state: state.state,
+      percent: Math.round(state.percent * 100) / 100
+    }
+  });
 
+  console.log(percents);
+}
+
+module.exports.getNationalTrends = getNationalTrends;
+module.exports.getStatePercentages = getStatePercentages;

@@ -7,16 +7,17 @@ var app = express();
 app.use(express.static(__dirname + '/../client/dist/'));
 app.use(bodyParser.json());
 
-app.get('/tweetdata', (req, res) => {
-  console.log('GET request for tweet data');
-  //db Call
-});
-
 app.get('/nationaltrends', async (req, res) => {
   console.log('GET request for national trends');
   let trends = await db.getNationalTrends();
   res.send(trends);
 });
+
+app.post('/statepercentages', async (req, res) => {
+  console.log('POST request for state percentages for ', req.body.word);
+  let percents = await db.getStatePercentages();
+  res.send(percents);
+})
 
 app.listen(3000, function() {
   console.log('Listening on port 3000!');
