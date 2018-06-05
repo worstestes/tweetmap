@@ -1,3 +1,6 @@
+
+module.exports.testNationalTrends = [{id:1, trend:'Trump'}, {id:2,trend:'Miss America'}, {id:3, trend:'Blakes hair'}];
+
 module.exports.testTrends = {
     AZ: {
       trends: [{word: 'trump', count: 180}, {word: 'ambien', count: 170}, {word: 'blake', count: 155}]

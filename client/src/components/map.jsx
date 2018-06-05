@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 import Datamap from './datamap.jsx';
 
@@ -14,13 +15,27 @@ export default class Map extends React.Component {
 			MT: {}, NC: {}, NE: {}, NV: {}, NH: {}, NJ: {}, NY: {}, ND: {}, NM: {}, OH: {},
 			OK: {}, OR: {}, PA: {}, RI: {}, SC: {}, SD: {}, TN: {}, TX: {}, UT: {}, WI: {},
 			VA: {}, VT: {}, WA: {}, WV: {}, WY: {}, CA: {}, CT: {}, AK: {}, AR: {}, AL: {}
-	  }
+    },
+    nationalTrends: [],
+    selectValue: ''
 	}
   }
   componentWillMount() {
+    this.getNationalTrends();
 		this.setTrends(testData.testTrends);
 		this.setPercentages(testData.testPercentages);
 		setTimeout(() => (console.log(this.state.states)), 0);
+  }
+
+  getNationalTrends() {
+    axios.get('/nationaltrends').then((response) => {
+      this.setState({
+        nationalTrends: response.data
+      });
+      return console.log('NATTY',response.data);
+    }).catch((err) => {
+      return console.error(err);
+    })
   }
 
   setPercentages(data) {
@@ -65,19 +80,32 @@ export default class Map extends React.Component {
 
   render() {
 		return (
-			<Datamap
-				scope="usa"
-				geographyConfig={{
-					highlightBorderColor: '#bada55',
-					popupTemplate: (geography, data) =>
-						`<div class='hoverinfo'><b>${geography.properties.name}\nTrends:\n</b> ${data.trends.map((trend) => {
-							return ' ' + trend.word + ': ' + trend.count;
-					})}`,
-					highlightBorderWidth: 3
-				}}
-				fills={this.createFills()}
-				data={this.state.states}
-			labels />
+			<div>
+				<div>
+					<select>
+            <option selected hidden>Top National Trends</option>
+						{this.state.nationalTrends.map((trend, i) => (
+							<option value={trend.trend} key={i}>{(i+1) + '. ' + trend.trend}</option>	
+						))}
+					</select>
+				</div>
+				<div className='map'>
+					<Datamap
+						scope="usa"
+						geographyConfig={{
+							highlightBorderColor: 'lightBlue',
+							popupTemplate: (geography, data) =>
+								`<div class='hoverinfo'><b>${geography.properties.name}\nTrends:\n</b> ${data.trends.map((trend) => {
+									return ' ' + trend.word + ': ' + trend.count;
+									})}
+								</div>`,
+							highlightBorderWidth: 3
+						}}
+						fills={this.createFills()}
+						data={this.state.states}
+					labels />
+				</div>
+			</div>
 		)
 	}
 }
