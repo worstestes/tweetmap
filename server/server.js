@@ -12,6 +12,12 @@ app.get('/tweetdata', (req, res) => {
   //db Call
 });
 
+app.get('/nationaltrends', async (req, res) => {
+  console.log('GET request for national trends');
+  let trends = await db.getNationalTrends();
+  res.send(trends);
+});
+
 app.listen(3000, function() {
   console.log('Listening on port 3000!');
 });
