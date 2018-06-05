@@ -100,14 +100,20 @@ const getStatePercentages = async (keyword) => {
       }
     ]);
     
-  percents = percents.map((state) => {
-    return {
-      state: state.state,
-      percent: Math.round(state.percent * 100) / 100
-    }
-  });
+  // percents = percents.map((state) => {
+  //   return {
+  //     state: state.state,
+  //     fillKey: Math.round(state.percent * 100) / 100
+  //   }
+  // });
 
-  console.log(percents);
+  let percentsObj = {};
+  let count = 0;
+  for (let val of percents) {
+    percentsObj[val.state] = {fillKey: Math.round(val.percent * 100) / 100};
+    count++
+  }
+  return percentsObj;
 }
 
 module.exports.getNationalTrends = getNationalTrends;

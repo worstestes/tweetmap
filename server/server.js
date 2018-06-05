@@ -15,7 +15,8 @@ app.get('/nationaltrends', async (req, res) => {
 
 app.post('/statepercentages', async (req, res) => {
   console.log('POST request for state percentages for ', req.body.word);
-  let percents = await db.getStatePercentages();
+  let percents = await db.getStatePercentages(req.body);
+  console.log('PERCENTS', percents)
   res.send(percents);
 })
 

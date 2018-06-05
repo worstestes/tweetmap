@@ -33,7 +33,6 @@ export default class Datamap extends React.Component {
   constructor(props) {
 		super(props);
 		this.resizeMap = this.resizeMap.bind(this);
-		// console.log(props)
   }
 
   componentDidMount() {
@@ -84,7 +83,9 @@ export default class Datamap extends React.Component {
 			//Originally in here but spread operator is not working for us. Tried pulling props out manually, hopefully didn't miss anything
 			// ...props
 		} = this.props;
-
+		
+		//Makes it populate new map with colors but creates new maps instead of replacing
+		delete this.map;
 		let map = this.map;
 
 		if (!map) {

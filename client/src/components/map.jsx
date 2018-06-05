@@ -17,6 +17,7 @@ export default class Map extends React.Component {
 			},
 			nationalTrends: [],
 			selectValue: 'Top National Trends',
+			colors: {}
 		}
 		this.handleChange = this.handleChange.bind(this);
   }
@@ -27,21 +28,44 @@ export default class Map extends React.Component {
   }
 
   getNationalTrends() {
-    axios.get('/nationaltrends').then((response) => {
-      this.setState({
-        nationalTrends: response.data
-      });
-    }).catch((err) => {
-      return console.error(err);
-    })
-  }
+		axios.get('/nationaltrends')
+			.then((response) => {
+				this.setState({
+					nationalTrends: response.data
+				});
+			}).catch((err) => {
+				return console.error(err);
+			})
+	}
+	
+	postStatePercentages(searchTerm) {
+		axios.post('/statepercentages', {word: 'trump'})
+			.then((response) => {
+				this.setPercentages(response.data);
+			})
+	}
 
   setPercentages(data) {
 		let statesCopy = Object.assign({}, this.state.states);
+		//Clear percentages
 		for (let state in statesCopy) {
-	  	statesCopy[state].fillKey = data[state].fillKey * 100;
+			statesCopy[state].fillKey = 0;
 		}
-		this.setState({states: statesCopy});
+
+		//Populate percentages
+		for (let state in statesCopy) {
+			if (data[state]) {
+				statesCopy[state].fillKey = data[state].fillKey;
+			}
+		}
+		this.setState({
+			states: statesCopy,
+		});
+		this.setFills();
+		setTimeout(() => {
+			console.log('colors', this.state.colors)
+			console.log(this.state.states)
+		}, 1000)
   }
 
   setTrends(data) {
@@ -52,7 +76,7 @@ export default class Map extends React.Component {
 		this.setState({states: statesCopy});
   }
 	
-	createFills() {
+	setFills() {
 		//Find lowest and highest percentages to make color gradient
 		let lowest = 100;
 		let highest = 0;
@@ -72,11 +96,15 @@ export default class Map extends React.Component {
 		for (let state in this.state.states) {
 			colorObj[this.state.states[state].fillKey] = colors(this.state.states[state].fillKey)	
 		}
-		return colorObj;
+		this.setState({
+			colors: colorObj
+		})
+		
 	}
 
 	handleChange(event) {
 		console.log('dropdown', event.target.value);
+		this.postStatePercentages(event.target.value);
 	}
 
   render() {
@@ -102,7 +130,7 @@ export default class Map extends React.Component {
 								</div>`,
 							highlightBorderWidth: 3
 						}}
-						fills={this.createFills()}
+						fills={this.state.colors}
 						data={this.state.states}
 					labels />
 				</div>
