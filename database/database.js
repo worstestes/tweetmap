@@ -55,3 +55,17 @@ data.find().exec().then((tweets) => {
 
 });
 
+const nationalTrends = mongoose.model('nationaltrend',
+  new Schema({ trend: String, rank: Number, date: String }),
+  'nationaltrends');
+
+const getNationalTrends = async () => {
+  let res = await nationalTrends
+    .find({rank: {$lte: 10}})
+    .select('trend');
+
+  return res;
+};
+
+module.exports.getNationalTrends = getNationalTrends;
+
