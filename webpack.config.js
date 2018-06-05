@@ -1,33 +1,23 @@
-const path = require("path");
-const webpack = require("webpack");
-const bundlePath = path.resolve(__dirname, "client/dist/");
+var path = require('path');
+var SRC_DIR = path.join(__dirname, '/client/src');
+var DIST_DIR = path.join(__dirname, '/client/dist');
 
 module.exports = {
-  entry: "./client/client.jsx",
+  entry: `${SRC_DIR}/index.jsx`,
   output: {
-    publicPath: bundlePath,
-    path: bundlePath,
-    filename: "bundle.js"
+    filename: 'bundle.js',
+    path: DIST_DIR
   },
-  module: {
-    rules: [
+  module : {
+    rules : [
       {
-        test: /\.(js|jsx)$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'babel-loader',
-        options: { presets: ['env'] }
-      },
-      {
-        test: /\.css$/,
-        use: [ 'style-loader', 'css-loader' ]
+        test : /\.jsx?/,
+        include : SRC_DIR,
+        loader : 'babel-loader',      
+        query: {
+          presets: ['react', 'env']
+        }
       }
     ]
-  },
-  resolve: { extensions: ['*', '.js', '.jsx'] },
-  // devServer: {
-  //   contentBase: path.join(__dirname,'public'),
-  //   port: 3000,
-  //   publicPath: "http://localhost:3000/dist"
-  // },
-  plugins: [ new webpack.HotModuleReplacementPlugin() ]
+  }
 };
