@@ -39,7 +39,7 @@ export default class Map extends React.Component {
   setPercentages(data) {
 		let statesCopy = Object.assign({}, this.state.states);
 		for (let state in statesCopy) {
-	  	statesCopy[state].fillKey = data[state].fillKey;
+	  	statesCopy[state].fillKey = data[state].fillKey * 100;
 		}
 		this.setState({states: statesCopy});
   }
@@ -54,7 +54,7 @@ export default class Map extends React.Component {
 	
 	createFills() {
 		//Find lowest and highest percentages to make color gradient
-		let lowest = 1;
+		let lowest = 100;
 		let highest = 0;
 		let sumPercentage = 0;
 		let count = 0;

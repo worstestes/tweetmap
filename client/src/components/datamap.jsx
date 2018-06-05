@@ -98,6 +98,8 @@ export default class Datamap extends React.Component {
 				data,
 				element: this.refs.container
 			});
+			console.dir(map.legend)
+			map.legend();
 		} else {
 			map.updateChoropleth(data, updateChoroplethOptions);
 			}
