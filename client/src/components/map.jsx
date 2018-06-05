@@ -5,26 +5,25 @@ import Datamap from './datamap.jsx';
 
 import testData from '../../../database/testData.js';
 export default class Map extends React.Component {
-  
   constructor() {
-	super();
-	this.state = {
-	  states: {
-			AZ: {}, CO: {}, DE: {}, FL: {}, GA: {}, HI: {}, ID: {}, IL: {}, IN: {}, IA: {}, 
-			KS: {}, KY: {}, LA: {}, MD: {}, ME: {}, MA: {}, MN: {}, MI: {}, MS: {}, MO: {},
-			MT: {}, NC: {}, NE: {}, NV: {}, NH: {}, NJ: {}, NY: {}, ND: {}, NM: {}, OH: {},
-			OK: {}, OR: {}, PA: {}, RI: {}, SC: {}, SD: {}, TN: {}, TX: {}, UT: {}, WI: {},
-			VA: {}, VT: {}, WA: {}, WV: {}, WY: {}, CA: {}, CT: {}, AK: {}, AR: {}, AL: {}
-    },
-    nationalTrends: [],
-    selectValue: ''
-	}
+		super();
+		this.state = {
+			states: {
+				AZ: {}, CO: {}, DE: {}, FL: {}, GA: {}, HI: {}, ID: {}, IL: {}, IN: {}, IA: {}, 
+				KS: {}, KY: {}, LA: {}, MD: {}, ME: {}, MA: {}, MN: {}, MI: {}, MS: {}, MO: {},
+				MT: {}, NC: {}, NE: {}, NV: {}, NH: {}, NJ: {}, NY: {}, ND: {}, NM: {}, OH: {},
+				OK: {}, OR: {}, PA: {}, RI: {}, SC: {}, SD: {}, TN: {}, TX: {}, UT: {}, WI: {},
+				VA: {}, VT: {}, WA: {}, WV: {}, WY: {}, CA: {}, CT: {}, AK: {}, AR: {}, AL: {}
+			},
+			nationalTrends: [],
+			selectValue: 'Top National Trends',
+		}
+		this.handleChange = this.handleChange.bind(this);
   }
   componentWillMount() {
     this.getNationalTrends();
 		this.setTrends(testData.testTrends);
 		this.setPercentages(testData.testPercentages);
-		setTimeout(() => (console.log(this.state.states)), 0);
   }
 
   getNationalTrends() {
@@ -32,7 +31,6 @@ export default class Map extends React.Component {
       this.setState({
         nationalTrends: response.data
       });
-      return console.log('NATTY',response.data);
     }).catch((err) => {
       return console.error(err);
     })
@@ -74,18 +72,21 @@ export default class Map extends React.Component {
 		for (let state in this.state.states) {
 			colorObj[this.state.states[state].fillKey] = colors(this.state.states[state].fillKey)	
 		}
-		console.log(colorObj);
 		return colorObj;
+	}
+
+	handleChange(event) {
+		console.log('dropdown', event.target.value);
 	}
 
   render() {
 		return (
 			<div>
 				<div>
-					<select>
-            <option selected hidden>Top National Trends</option>
+					<select defaultValue={this.state.selectValue} onChange={this.handleChange}>
+            <option defaultValue hidden>Top National Trends</option>
 						{this.state.nationalTrends.map((trend, i) => (
-							<option value={trend.trend} key={i}>{(i+1) + '. ' + trend.trend}</option>	
+							<option value={trend.trend} key={i+1}>{(i+1) + '. ' + trend.trend}</option>	
 						))}
 					</select>
 				</div>
