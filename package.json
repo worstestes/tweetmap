@@ -7,7 +7,7 @@
     "react-dev": "webpack -d --watch",
     "server-dev": "nodemon server/server.js",
     "start": "node server/server.js",
-    "react": "webpack -p --watch",
+    "react": "webpack -p --watch"
   },
   "author": "Blake Estes, Joseph Oh, Michael Panetta, Greg Richardson",
   "license": "ISC",
