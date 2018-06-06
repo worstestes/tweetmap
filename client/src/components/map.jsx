@@ -17,9 +17,12 @@ export default class Map extends React.Component {
 			},
 			nationalTrends: [],
 			selectValue: 'Top National Trends',
-			colors: {}
+      colors: {},
+      textbox: ''
 		}
-		this.handleChange = this.handleChange.bind(this);
+    this.handleDropdown = this.handleDropdown.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleTextboxChange = this.handleTextboxChange.bind(this);
   }
   componentWillMount() {
     this.getNationalTrends();
@@ -39,7 +42,8 @@ export default class Map extends React.Component {
 	}
 	
 	postStatePercentages(searchTerm) {
-		axios.post('/statepercentages', {word: 'trump'})
+    console.log(searchTerm)
+    axios.post('/statepercentages', {word: searchTerm})
 			.then((response) => {
 				this.setPercentages(response.data);
 			})
@@ -90,8 +94,13 @@ export default class Map extends React.Component {
 		}
 		
 		let mean = sumPercentage / count;
-		//Create color gradient based on lowest and highest percentages found
-		const colors = d3.scale.linear().domain([lowest, mean, highest]).range(['#fff0f0', '#ff4d4d', '#990000']);
+    //Create color gradient based on lowest and highest percentages found
+    let colors;
+    if (lowest !== highest) {
+      colors = d3.scale.linear().domain([lowest, mean, highest]).range(['#fff0f0', '#ff4d4d', '#990000']);
+    } else {
+      colors = d3.scale.linear().domain([lowest, highest]).range(['lightGreen', 'lightGreen']);
+    }
 		let colorObj = {};
 		for (let state in this.state.states) {
 			colorObj[this.state.states[state].fillKey] = colors(this.state.states[state].fillKey)	
@@ -102,16 +111,34 @@ export default class Map extends React.Component {
 		
 	}
 
-	handleChange(event) {
+	handleDropdown(event) {
 		console.log('dropdown', event.target.value);
-		this.postStatePercentages(event.target.value);
-	}
+    this.postStatePercentages(event.target.value);
+    event.preventDefault();
+  }
+
+  handleTextboxChange(event) {
+    this.setState({textbox: event.target.value});
+  }
+  
+  handleSubmit(event) {
+    console.log('submit', event.target.value);
+    this.postStatePercentages(this.state.textbox);
+    event.preventDefault();
+  }
 
   render() {
 		return (
 			<div>
 				<div>
-					<select defaultValue={this.state.selectValue} onChange={this.handleChange}>
+          <form onSubmit={this.handleSubmit}>
+            <label>
+              Trend 
+              <input type="text" onChange={this.handleTextboxChange}/>
+            </label>
+          <input type="submit" value="Submit" />
+        </form>
+					<select defaultValue={this.state.selectValue} onChange={this.handleDropdown}>
             <option defaultValue hidden>Top National Trends</option>
 						{this.state.nationalTrends.map((trend, i) => (
 							<option value={trend.trend} key={i+1}>{(i+1) + '. ' + trend.trend}</option>	
