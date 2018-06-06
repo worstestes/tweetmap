@@ -108,17 +108,26 @@ export default class Map extends React.Component {
 	}
 
 	handleDropdown(event) {
-    this.postStatePercentages(event.target.value);
+		this.postStatePercentages(event.target.value);
+		this.setState({
+			textbox: '',
+			searched: event.target.value
+		})
     event.preventDefault();
   }
 
   handleTextboxChange(event) {
-    this.setState({textbox: event.target.value});
+    this.setState({
+			textbox: event.target.value
+		});
   }
   
   handleSubmit(event) {
     this.postStatePercentages(this.state.textbox);
-    this.setState({textbox: ''});
+    this.setState({
+			textbox: '',
+			searched: this.state.textbox
+		});
     event.preventDefault();
   }
 
@@ -129,7 +138,7 @@ export default class Map extends React.Component {
           <form onSubmit={this.handleSubmit}>
             <label>
               Trend 
-              <input type="text" onChange={this.handleTextboxChange}/>
+              <input type="text" value={this.state.textbox} onChange={this.handleTextboxChange}/>
             </label>
           <input type="submit" value="Calculate" />
         </form>
@@ -140,6 +149,9 @@ export default class Map extends React.Component {
 							<option value={trend.trend} key={i+1}>{(i+1) + '. ' + trend.trend}</option>	
 						))}
 					</select>
+					<br></br>
+					<br></br>
+					<b>{this.state.searched}</b>
 				</div>
 				<div className='map'>
 					<Datamap
