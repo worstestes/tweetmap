@@ -99,14 +99,7 @@ const getStatePercentages = async (keyword) => {
         }
       }
     ]);
-    
-  // percents = percents.map((state) => {
-  //   return {
-  //     state: state.state,
-  //     fillKey: Math.round(state.percent * 100) / 100
-  //   }
-  // });
-
+  
   let percentsObj = {};
   let count = 0;
   for (let val of percents) {
