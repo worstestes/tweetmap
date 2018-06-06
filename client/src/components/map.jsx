@@ -27,7 +27,6 @@ export default class Map extends React.Component {
   componentWillMount() {
     this.getNationalTrends();
 		this.setTrends(testData.testTrends);
-		this.setPercentages(testData.testPercentages);
   }
 
   getNationalTrends() {
@@ -42,7 +41,7 @@ export default class Map extends React.Component {
 	}
 	
 	postStatePercentages(searchTerm) {
-    console.log(searchTerm)
+    console.log('Keyword:', searchTerm)
     axios.post('/statepercentages', {word: searchTerm})
 			.then((response) => {
 				this.setPercentages(response.data);
@@ -66,10 +65,6 @@ export default class Map extends React.Component {
 			states: statesCopy,
 		});
 		this.setFills();
-		setTimeout(() => {
-			console.log('colors', this.state.colors)
-			console.log(this.state.states)
-		}, 1000)
   }
 
   setTrends(data) {
@@ -85,7 +80,9 @@ export default class Map extends React.Component {
 		let lowest = 100;
 		let highest = 0;
 		let sumPercentage = 0;
-		let count = 0;
+    let count = 0;
+    let mean;
+    let colors;
 		for (let state in this.state.states) {
 			count++;
 			sumPercentage += this.state.states[state].fillKey;
@@ -93,10 +90,9 @@ export default class Map extends React.Component {
 			this.state.states[state].fillKey > highest ? highest = this.state.states[state].fillKey : null;
 		}
 		
-		let mean = sumPercentage / count;
+		mean = sumPercentage / count;
     //Create color gradient based on lowest and highest percentages found
-    let colors;
-    if (lowest !== highest) {
+    if (lowest < highest) {
       colors = d3.scale.linear().domain([lowest, mean, highest]).range(['#fff0f0', '#ff4d4d', '#990000']);
     } else {
       colors = d3.scale.linear().domain([lowest, highest]).range(['lightGreen', 'lightGreen']);
@@ -112,7 +108,6 @@ export default class Map extends React.Component {
 	}
 
 	handleDropdown(event) {
-		console.log('dropdown', event.target.value);
     this.postStatePercentages(event.target.value);
     event.preventDefault();
   }
@@ -122,8 +117,8 @@ export default class Map extends React.Component {
   }
   
   handleSubmit(event) {
-    console.log('submit', event.target.value);
     this.postStatePercentages(this.state.textbox);
+    this.setState({textbox: ''});
     event.preventDefault();
   }
 
@@ -136,8 +131,9 @@ export default class Map extends React.Component {
               Trend 
               <input type="text" onChange={this.handleTextboxChange}/>
             </label>
-          <input type="submit" value="Submit" />
+          <input type="submit" value="Calculate" />
         </form>
+        <br></br>
 					<select defaultValue={this.state.selectValue} onChange={this.handleDropdown}>
             <option defaultValue hidden>Top National Trends</option>
 						{this.state.nationalTrends.map((trend, i) => (
