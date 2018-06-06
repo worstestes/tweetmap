@@ -103,9 +103,10 @@ const getStatePercentages = async (keyword) => {
   let percentsObj = {};
   let count = 0;
   for (let val of percents) {
-    percentsObj[val.state] = {fillKey: Math.round(val.percent)};
+    percentsObj[val.state] = {fillKey: Math.round(val.percent * 100) / 100};
     count++
   }
+  console.log(percentsObj);
   return percentsObj;
 }
 
