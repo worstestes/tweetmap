@@ -11,103 +11,139 @@ let rp = require('remove-punctuation');
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () { console.log('Connection Established.') });
 
-let stateTweet = mongoose.model('StateTweet',
-  new Schema({ state: String, text: String }),
-  'StateTweets');
+let StateTweets = mongoose.model('StateTweets',
+  new Schema({ state: String, text: String }), 'StateTweets');
   
-const nationalTrends = mongoose.model('NationalTrend',
-  new Schema({ trend: String, rank: Number, date: String }),
-  'NationalTrends');
+  let tweetSchema = mongoose.Schema({
+    state: String,
+    keywords: Schema.Types.Mixed,
+  }, { versionKey: false });
 
-const tweetArr = [];
-stateTweet.find().exec().then((tweets) => {
-  for (let tweet of tweets) {
-    const newTweetData = {};
-    let tweetText = tweet.text.split(' ');
-    let newTweetText = sw.removeStopwords(tweetText);
 
-    newTweetData.state = tweet.state;
-    newTweetData.text = newTweetText;
-    tweetArr.push(newTweetData);
+  var Twit = mongoose.model('Twit', tweetSchema);
+
+  let data = mongoose.model('Twitdata',
+  new Schema({ state: String, text: String }), 'twitdata');
+
+  const states = [
+    "AL", 
+    "AK", 
+    "AZ", 
+    "AR", 
+    "CA", 
+    "CO", 
+    "CT", 
+    "DE", 
+    "DC", 
+    "FL", 
+    "GA", 
+    "HI", 
+    "ID", 
+    "IL", 
+    "IN",  
+    "IA", 
+    "KS", 
+    "KY", 
+    "LA", 
+    "ME", 
+    "MD", 
+    "MA", 
+    "MI", 
+    "MN", 
+    "MS", 
+    "MO", 
+    "MT", 
+    "NE", 
+    "NV", 
+    "NH", 
+    "NJ", 
+    "NM", 
+    "NY", 
+    "NC",  
+    "ND",  
+    "OH", 
+    "OK", 
+    "OR", 
+    "PA", 
+    "RI", 
+    "SC", 
+    "SD", 
+    "TN", 
+    "TX",  
+    "UT", 
+    "VT", 
+    "VA", 
+    "WA", 
+    "WV", 
+    "WI", 
+    "WY", 
+  ]
+
+
+let totalTweetArray = [];
+
+StateTweets.find().exec().then((res) => {
+  for(let doc of res) {
+    let message = doc.text.split(' ');
+    for(let state of states) {
+    if(doc.state === state) {
+      let obj = {};
+      let message = doc.text.split(' ');
+      let keywordCollection = sw.removeStopwords(message);
+      let keyword = keywordCollection.map((word) => {
+        word = rp(word).toLowerCase();
+        if(typeof word === "string" && typeof word !== "undefined" && word !== "" && word !== "-") {
+          return word;
+        }
+      })
+        let stateKeyWords = _.countBy(keyword);
+        obj.state = state;
+        obj.keywords = [stateKeyWords];
+        totalTweetArray.push(obj);
+      }
+      
+    }
   }
 
-  let final = [];
-  for (let tweet of tweetArr) {
-    final.push(tweet.text);
-  }
 
-  final = _.flatten(final);
+  let fiftyplusstates = [];
+  for(let state of states) {
+    let stateObj = {};
+    let stateName = {}
+    let stateList = {};
+    stateName.state = state;
+    stateObj.state = stateName.state;
+    stateObj.keywords = stateList;
 
-  let test = [];
-  for (let word of final) {
-    test.push(word.toLowerCase());
-  }
-  let desired = test.filter((word) => word !== '');
-
-  var frequencies = desired.reduce(function (acc, word) {
-    acc[word] = (acc[word] + 1) || 1;
-    return acc;
-  }, {});
-
-
-  var mostFrequentWord = Object.keys(frequencies)
-    .reduce(function (highest, current) {
-      return frequencies[highest] > frequencies[current] ? highest : current;
-    }, "");
-
-  console.log(mostFrequentWord);
-
-
-});
-
-const getNationalTrends = async () => {
-  let res = await nationalTrends
-    .find({rank: {$lte: 10}})
-    .select('trend');
-
-  return res;
-};
-
-const getStatePercentages = async (keyword) => {
-  let percents = await stateTweet
-    .aggregate([
-      {
-        $group: {
-          _id: "$state",
-          state: {$first: "$state"},
-          totalCount: {$sum: 1},
-          text: {$push: "$$ROOT.text"}
-        }
-      }, {
-        $unwind: "$text"
-      }, {
-        $match: {
-          "text": {"$regex": keyword.word, "$options": "i"}
-        }
-      }, {
-        $group: {
-          _id: "$state",
-          state: {$first: "$state"},
-          totalCount: {$first: "$totalCount"},
-          matchCount: {$sum: 1}
-        }
-      }, {
-        $project: {
-          _id: 0,
-          state: 1,
-          percent: {$multiply: [{$divide: ["$matchCount", "$totalCount"]}, 100]}
+    for(let tweet of totalTweetArray) {
+      if(tweet.state === state) {
+          let stateObj = {};
+          stateObj.state = state;
+          tweet.keywords.forEach((list) => {
+            if(tweet.state === state) {
+              let test = Object.assign(stateList, list);
+              stateList = test;
+            }
+          })
         }
       }
-    ]);
-  
-  let percentsObj = {};
-  let count = 0;
-  for (let val of percents) {
-    percentsObj[val.state] = {fillKey: Math.round(val.percent)};
-    count++
-  }
-  return percentsObj;
+      fiftyplusstates.push(stateObj);
+    }
+
+
+    for(let state of fiftyplusstates) {
+      var data = new Twit({state: state.state, keywords: state.keywords});
+      data.save(function (err) {
+        if(err) {console.log("error")};
+        console.log("saved");
+      });
 }
 
-module.exports.getNationalTrends = getNationalTrends;
-module.exports.getStatePercentages = getStatePercentages;
+
+
+
+})
+
+
+
+    
