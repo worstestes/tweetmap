@@ -156,153 +156,153 @@ module.exports.testTrends = {
 
 module.exports.testPercentages = {
     AZ: {
-        fillKey: .01
+        fillKey: 1
     },
     CO: {
-        fillKey: .02
+        fillKey: 2
     },
     DE: {
-        fillKey: .03
+        fillKey: 3
     },
     FL: {
-        fillKey: .04
+        fillKey: 4
     },
     GA: {
-        fillKey: .2
+        fillKey: 20
     },
     HI: {
-        fillKey: .08
+        fillKey: 8
     },
     ID: {
-        fillKey: .2
+        fillKey: 2
     },
     IL: {
-        fillKey: .08
+        fillKey: 8
     },
     IN: {
-        fillKey: .2
+        fillKey: 2
     },
     IA: {
-        fillKey: .15
+        fillKey: 15
     },
     KS: {
-        fillKey: .2
+        fillKey: 2
     },
     KY: {
-        fillKey: .2
+        fillKey: 2
     },
     LA: {
-        fillKey: .2
+        fillKey: 2
     },
     MD: {
-        fillKey: .3
+        fillKey: 3
     },
     ME: {
-        fillKey: .3
+        fillKey: 3
     },
     MA: {
-        fillKey: .3
+        fillKey: 3
     },
     MN: {
-        fillKey: .3
+        fillKey: 3
     },
     MI: {
-        fillKey: .3
+        fillKey: 3
     },
     MS: {
-        fillKey: .2
+        fillKey: 2
     },
     MO: {
-        fillKey: .2
+        fillKey: 2
     },
     MT: {
-        fillKey: .2
+        fillKey: 2
     },
     NC: {
-        fillKey: .04
+        fillKey: 4
     },
     NE: {
-        fillKey: .2
+        fillKey: 2
     },
     NV: {
-        fillKey: .06
+        fillKey: 6
     },
     NH: {
-        fillKey: .15
+        fillKey: 15
     },
     NJ: {
-        fillKey: .18
+        fillKey: 18
     },
     NY: {
-        fillKey: .18
+        fillKey: 18
     },
     ND: {
-        fillKey: .2
+        fillKey: 2
     },
     NM: {
-        fillKey: .18
+        fillKey: 18
     },
     OH: {
-        fillKey: .03
+        fillKey: 3
     },
     OK: {
-        fillKey: .2
+        fillKey: 2
     },
     OR: {
-        fillKey: .18
+        fillKey: 18
     },
     PA: {
-        fillKey: .18
+        fillKey: 18
     },
     RI: {
-        fillKey: .18
+        fillKey: 18
     },
     SC: {
-        fillKey: .2
+        fillKey: 2
     },
     SD: {
-        fillKey: .2
+        fillKey: 2
     },
     TN: {
-        fillKey: .2
+        fillKey: 2
     },
     TX: {
-        fillKey: 0.1
+        fillKey: 01
     },
     UT: {
-        fillKey: .2
+        fillKey: 2
     },
     WI: {
-        fillKey: .18
+        fillKey: 18
     },
     VA: {
-        fillKey: .15
+        fillKey: 15
     },
     VT: {
-        fillKey: .18
+        fillKey: 18
     },
     WA: {
-        fillKey: .18
+        fillKey: 18
     },
     WV: {
-        fillKey: .2
+        fillKey: 2
     },
     WY: {
-        fillKey: .2
+        fillKey: 2
     },
     CA: {
-        fillKey: .18
+        fillKey: 18
     },
     CT: {
-        fillKey: .18
+        fillKey: 18
     },
     AK: {
-        fillKey: .2
+        fillKey: 2
     },
     AR: {
-        fillKey: .2
+        fillKey: 2
     },
     AL: {
-        fillKey: .2
+        fillKey: 2
     }
   }

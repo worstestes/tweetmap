@@ -33,7 +33,6 @@ export default class Datamap extends React.Component {
   constructor(props) {
 		super(props);
 		this.resizeMap = this.resizeMap.bind(this);
-		// console.log(props)
   }
 
   componentDidMount() {
@@ -84,7 +83,7 @@ export default class Datamap extends React.Component {
 			//Originally in here but spread operator is not working for us. Tried pulling props out manually, hopefully didn't miss anything
 			// ...props
 		} = this.props;
-
+		
 		let map = this.map;
 
 		if (!map) {
@@ -98,26 +97,25 @@ export default class Datamap extends React.Component {
 				data,
 				element: this.refs.container
 			});
-			console.dir(map.legend)
-			map.legend();
 		} else {
-			map.updateChoropleth(data, updateChoroplethOptions);
+				map.options.fills = this.props.fills;
+        map.updateChoropleth(data, updateChoroplethOptions);
 			}
-
+      map.legend();
 			if (arc) {
 				map.arc(arc, arcOptions);
 			}
 
 			if (bubbles) {
-			map.bubbles(bubbles, bubbleOptions);
+		  	map.bubbles(bubbles, bubbleOptions);
 			}
 
 			if (graticule) {
-			map.graticule();
+			  map.graticule();
 			}
 
 			if (labels) {
-			map.labels();
+			  map.labels();
 			}
 	}
 
