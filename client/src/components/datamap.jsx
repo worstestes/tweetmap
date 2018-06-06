@@ -14,7 +14,7 @@ const propChangeRequiresMapClear = (oldProps, newProps) => {
 
 export default class Datamap extends React.Component {
 	
-  // Originally in here when copied over but pop a syntax error
+  // Originally in here when copied over but pops a syntax error
   // static propTypes = {
   // 	return {arc: PropTypes.array,
   // 	arcOptions: PropTypes.object,
@@ -67,7 +67,7 @@ export default class Datamap extends React.Component {
 		}
 
 		delete this.map;
-  }
+	}
 
   drawMap() {
 		const {
@@ -83,7 +83,7 @@ export default class Datamap extends React.Component {
 			//Originally in here but spread operator is not working for us. Tried pulling props out manually, hopefully didn't miss anything
 			// ...props
 		} = this.props;
-		
+
 		let map = this.map;
 
 		if (!map) {
@@ -91,11 +91,11 @@ export default class Datamap extends React.Component {
 				//Originally in here but spread operator is not working for us. Tried pulling props out manually, hopefully didn't miss anything
 				// ...props,
 				scope: this.props.scope,
-				labels: 'this.props.labels',
+				labels: this.props.labels,
 				fills: this.props.fills,
+				element: this.refs.container,
 				geographyConfig: this.props.geographyConfig,
-				data,
-				element: this.refs.container
+				data
 			});
 		} else {
 				map.options.fills = this.props.fills;
@@ -118,16 +118,16 @@ export default class Datamap extends React.Component {
 			  map.labels();
 			}
 	}
-
+	
 	resizeMap() {
 	  this.map.resize();
 	}
 
 	render() {
 	  const style = {
-			height: '100%',
-			position: 'absolute',
-			width: '100%',
+			height: this.props.height,
+			width: this.props.width,
+			position: this.props.position,
 			// height: '600px'
 			//Originally in here but spread operator is not working for us. Tried pulling props out manually, hopefully didn't miss anything
 			// ...this.props.style

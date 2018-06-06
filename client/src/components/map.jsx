@@ -77,12 +77,8 @@ export default class Map extends React.Component {
 	
 	setFills() {
 		//Find lowest and highest percentages to make color gradient
-		let lowest = 100;
-		let highest = 0;
-		let sumPercentage = 0;
-    let count = 0;
-    let mean;
-    let colors;
+		let lowest = 100, highest = 0, sumPercentage = 0, count = 0, mean, colors;
+		let colorObj = {};
 		for (let state in this.state.states) {
 			count++;
 			sumPercentage += this.state.states[state].fillKey;
@@ -95,9 +91,8 @@ export default class Map extends React.Component {
     if (lowest < highest) {
       colors = d3.scale.linear().domain([lowest, mean, highest]).range(['#fff0f0', '#ff4d4d', '#990000']);
     } else {
-      colors = d3.scale.linear().domain([lowest, highest]).range(['lightGreen', 'lightGreen']);
+      colors = d3.scale.linear().domain([lowest, highest]).range(['#ABDDA4', '#ABDDA4']);
     }
-		let colorObj = {};
 		for (let state in this.state.states) {
 			colorObj[this.state.states[state].fillKey] = colors(this.state.states[state].fillKey)	
 		}
@@ -156,11 +151,15 @@ export default class Map extends React.Component {
 				<div className='map'>
 					<Datamap
 						scope="usa"
+						height='100%'
+						width='100%'
+						position='absolute'
 						geographyConfig={{
 							highlightBorderColor: 'lightBlue',
+							highlightFillColor: 'yellow',
 							popupTemplate: (geography, data) =>
 								`<div class='hoverinfo'><b>${geography.properties.name}\nTrends:\n</b> ${data.trends.map((trend) => {
-									return ' ' + trend.word + ': ' + trend.count;
+									  return ' ' + trend.word + ': ' + trend.count;
 									})}
 								</div>`,
 							highlightBorderWidth: 3
