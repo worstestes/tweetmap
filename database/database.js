@@ -76,7 +76,7 @@ const getStatePercentages = async (keyword) => {
           _id: "$state",
           state: {$first: "$state"},
           totalCount: {$sum: 1},
-          text: {$push: "$$ROOT.text"}
+          text: {$push: "$text"}
         }
       }, {
         $unwind: "$text"
@@ -89,12 +89,14 @@ const getStatePercentages = async (keyword) => {
           _id: "$state",
           state: {$first: "$state"},
           totalCount: {$first: "$totalCount"},
-          matchCount: {$sum: 1}
+          matchCount: {$sum: 1},
+          text: {$push: "$text"}
         }
       }, {
         $project: {
           _id: 0,
           state: 1,
+          text: 1,
           percent: {$multiply: [{$divide: ["$matchCount", "$totalCount"]}, 100]}
         }
       }
@@ -103,7 +105,10 @@ const getStatePercentages = async (keyword) => {
   let percentsObj = {};
   let count = 0;
   for (let val of percents) {
-    percentsObj[val.state] = {fillKey: Math.round(val.percent * 100) / 100};
+    percentsObj[val.state] = {
+      fillKey: Math.round(val.percent * 100) / 100,
+      text: val.text.slice(0, 4)
+    };
     count++
   }
 
