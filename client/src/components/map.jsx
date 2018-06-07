@@ -53,18 +53,21 @@ export default class Map extends React.Component {
 		//Clear percentages
 		for (let state in statesCopy) {
 			statesCopy[state].fillKey = 0;
+			statesCopy[state].text = [];
 		}
 
 		//Populate percentages
 		for (let state in statesCopy) {
 			if (data[state]) {
 				statesCopy[state].fillKey = data[state].fillKey;
+				statesCopy[state].text = data[state].text;
 			}
 		}
 		this.setState({
 			states: statesCopy,
 		});
 		this.setFills();
+		setTimeout(() => console.log(this.state.states), 1000);
   }
 
   setTrends(data) {
@@ -157,11 +160,12 @@ export default class Map extends React.Component {
 						geographyConfig={{
 							highlightBorderColor: 'lightBlue',
 							highlightFillColor: 'yellow',
-							popupTemplate: (geography, data) =>
-								`<div class='hoverinfo'><b>${geography.properties.name}\nTrends:\n</b> ${data.trends.map((trend) => {
-									  return ' ' + trend.word + ': ' + trend.count;
-									})}
-								</div>`,
+							popupTemplate: (geography, data) => {
+								return `<div class='hoverinfo'><b><i>${data.fillKey}%</i><br>${geography.properties.name} Tweets</b> ${data.text.map((tweet, i) => {
+									return '<br><br>' + '<b>' + (i+1) + '</b>' + '. ' + tweet;
+								})}
+								</div>`
+							},
 							highlightBorderWidth: 3
 						}}
 						fills={this.state.colors}
