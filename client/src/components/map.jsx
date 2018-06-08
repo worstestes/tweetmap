@@ -27,7 +27,6 @@ export default class Map extends React.Component {
   componentWillMount() {
     this.getNationalTrends();
 		this.setTrends(testData.testTrends);
-		this.setPercentages(testData.testPercentages);
   }
 
   getNationalTrends() {
@@ -42,7 +41,7 @@ export default class Map extends React.Component {
 	}
 	
 	postStatePercentages(searchTerm) {
-    console.log(searchTerm)
+    console.log('Keyword:', searchTerm)
     axios.post('/statepercentages', {word: searchTerm})
 			.then((response) => {
 				this.setPercentages(response.data);
@@ -54,22 +53,21 @@ export default class Map extends React.Component {
 		//Clear percentages
 		for (let state in statesCopy) {
 			statesCopy[state].fillKey = 0;
+			statesCopy[state].text = [];
 		}
 
 		//Populate percentages
 		for (let state in statesCopy) {
 			if (data[state]) {
 				statesCopy[state].fillKey = data[state].fillKey;
+				statesCopy[state].text = data[state].text;
 			}
 		}
 		this.setState({
 			states: statesCopy,
 		});
 		this.setFills();
-		setTimeout(() => {
-			console.log('colors', this.state.colors)
-			console.log(this.state.states)
-		}, 1000)
+		setTimeout(() => console.log(this.state.states), 1000);
   }
 
   setTrends(data) {
@@ -82,10 +80,8 @@ export default class Map extends React.Component {
 	
 	setFills() {
 		//Find lowest and highest percentages to make color gradient
-		let lowest = 100;
-		let highest = 0;
-		let sumPercentage = 0;
-		let count = 0;
+		let lowest = 100, highest = 0, sumPercentage = 0, count = 0, mean, colors;
+		let colorObj = {};
 		for (let state in this.state.states) {
 			count++;
 			sumPercentage += this.state.states[state].fillKey;
@@ -93,15 +89,13 @@ export default class Map extends React.Component {
 			this.state.states[state].fillKey > highest ? highest = this.state.states[state].fillKey : null;
 		}
 		
-		let mean = sumPercentage / count;
+		mean = sumPercentage / count;
     //Create color gradient based on lowest and highest percentages found
-    let colors;
-    if (lowest !== highest) {
+    if (lowest < highest) {
       colors = d3.scale.linear().domain([lowest, mean, highest]).range(['#fff0f0', '#ff4d4d', '#990000']);
     } else {
-      colors = d3.scale.linear().domain([lowest, highest]).range(['lightGreen', 'lightGreen']);
+      colors = d3.scale.linear().domain([lowest, highest]).range(['#ABDDA4', '#ABDDA4']);
     }
-		let colorObj = {};
 		for (let state in this.state.states) {
 			colorObj[this.state.states[state].fillKey] = colors(this.state.states[state].fillKey)	
 		}
@@ -112,18 +106,26 @@ export default class Map extends React.Component {
 	}
 
 	handleDropdown(event) {
-		console.log('dropdown', event.target.value);
-    this.postStatePercentages(event.target.value);
+		this.postStatePercentages(event.target.value);
+		this.setState({
+			textbox: '',
+			searched: event.target.value
+		})
     event.preventDefault();
   }
 
   handleTextboxChange(event) {
-    this.setState({textbox: event.target.value});
+    this.setState({
+			textbox: event.target.value
+		});
   }
   
   handleSubmit(event) {
-    console.log('submit', event.target.value);
     this.postStatePercentages(this.state.textbox);
+    this.setState({
+			textbox: '',
+			searched: this.state.textbox
+		});
     event.preventDefault();
   }
 
@@ -134,27 +136,36 @@ export default class Map extends React.Component {
           <form onSubmit={this.handleSubmit}>
             <label>
               Trend 
-              <input type="text" onChange={this.handleTextboxChange}/>
+              <input type="text" value={this.state.textbox} onChange={this.handleTextboxChange}/>
             </label>
-          <input type="submit" value="Submit" />
+          <input type="submit" value="Calculate" />
         </form>
+        <br></br>
 					<select defaultValue={this.state.selectValue} onChange={this.handleDropdown}>
             <option defaultValue hidden>Top National Trends</option>
 						{this.state.nationalTrends.map((trend, i) => (
 							<option value={trend.trend} key={i+1}>{(i+1) + '. ' + trend.trend}</option>	
 						))}
 					</select>
+					<br></br>
+					<br></br>
+					<b>{this.state.searched}</b>
 				</div>
 				<div className='map'>
 					<Datamap
 						scope="usa"
+						height='100%'
+						width='100%'
+						position='absolute'
 						geographyConfig={{
 							highlightBorderColor: 'lightBlue',
-							popupTemplate: (geography, data) =>
-								`<div class='hoverinfo'><b>${geography.properties.name}\nTrends:\n</b> ${data.trends.map((trend) => {
-									return ' ' + trend.word + ': ' + trend.count;
-									})}
-								</div>`,
+							highlightFillColor: 'yellow',
+							popupTemplate: (geography, data) => {
+								return `<div class='hoverinfo'><b><i>${data.fillKey}%</i><br>${geography.properties.name} Tweets</b> ${data.text.map((tweet, i) => {
+									return '<br><br>' + '<b>' + (i+1) + '</b>' + '. ' + tweet;
+								})}
+								</div>`
+							},
 							highlightBorderWidth: 3
 						}}
 						fills={this.state.colors}

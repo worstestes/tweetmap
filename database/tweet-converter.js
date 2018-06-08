@@ -62,12 +62,10 @@ let count = 0;
 
 for (tweet of tweetArr) {
   let state = undefined;
-  let stateAcr = '';
 
   if (tweet.placeType === 'city') {
-    stateAcr = tweet.placeFull.slice(tweet.placeFull.length - 2);
-    state = stateAcr;
-  } else if (tweet.placeType === 'admin' && Object.values(acronyms).includes(tweet.placeName)){
+    state = tweet.placeFull.slice(tweet.placeFull.length - 2);
+  } else if (tweet.placeType === 'admin' && Object.keys(acronyms).includes(tweet.placeName)){
     state = acronyms[tweet.placeName];
   }
 
