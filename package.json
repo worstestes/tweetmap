@@ -4,6 +4,7 @@
   "description": "Mapping tweets",
   "main": "client.jsx",
   "scripts": {
+    "build": "webpack",
     "react-dev": "webpack -d --watch",
     "server-dev": "nodemon server/server.js"
   },
